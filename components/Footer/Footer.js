@@ -46,13 +46,13 @@ const Footer = () => {
         <div className={styles.top}>
           <div className={styles.brand}>
             <Link href="/" className={styles.logo}>
-              <Image
+              {/* <Image
                 src="/logo.png"
                 alt="TalTracker Logo"
                 width={40}
                 height={40}
                 priority
-              />
+              /> */}
               <span>TalTracker</span>
             </Link>
             <p>

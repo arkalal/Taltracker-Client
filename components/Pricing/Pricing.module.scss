@@ -175,11 +175,28 @@
 
   @media (max-width: 1024px) {
     .grid {
-      grid-template-columns: repeat(2, 1fr);
-      max-width: 800px;
+      grid-template-columns: 1fr;
+      max-width: 600px;
+      gap: 2rem;
 
-      .plan.popular {
-        grid-column: span 2;
+      .plan {
+        transform: none;
+        width: 100%;
+
+        &.popular {
+          grid-column: 1;
+          transform: none;
+          max-width: 100%;
+          margin: 2rem auto;
+
+          &:hover {
+            transform: translateY(-5px);
+          }
+        }
+
+        &:hover {
+          transform: translateY(-5px);
+        }
       }
     }
   }
@@ -200,12 +217,18 @@
     .grid {
       grid-template-columns: 1fr;
       max-width: 400px;
+      gap: 2rem;
 
       .plan {
         transform: none !important;
 
         &.popular {
-          grid-column: span 1;
+          grid-column: 1;
+          margin: 2rem auto;
+        }
+
+        &:hover {
+          transform: translateY(-5px) !important;
         }
       }
     }

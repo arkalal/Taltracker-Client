@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { BsChevronLeft, BsChevronRight, BsStarFill } from "react-icons/bs";
 import styles from "./Testimonials.module.scss";
+import userImg from "../../assets/images/user.png";
 
 const Testimonials = () => {
   const testimonials = [
@@ -12,7 +13,7 @@ const Testimonials = () => {
       name: "Sarah Johnson",
       role: "HR Director",
       company: "Tech Innovations Inc.",
-      image: "/testimonials/sarah.jpg",
+      image: userImg,
       content:
         "The AI-powered job description generator has saved our HR team countless hours. It's incredibly accurate and professional.",
       rating: 5,
@@ -22,7 +23,7 @@ const Testimonials = () => {
       name: "Michael Chen",
       role: "L&D Manager",
       company: "Global Solutions Ltd.",
-      image: "/testimonials/michael.jpg",
+      image: userImg,
       content:
         "This platform has revolutionized how we create and manage training programs. The AI suggestions are spot-on!",
       rating: 5,
@@ -32,7 +33,7 @@ const Testimonials = () => {
       name: "Emily Rodriguez",
       role: "Talent Acquisition Lead",
       company: "Future Corp",
-      image: "/testimonials/emily.jpg",
+      image: userImg,
       content:
         "The assessment generation tool has made our hiring process much more efficient and objective. Highly recommended!",
       rating: 5,

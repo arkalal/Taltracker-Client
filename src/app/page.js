@@ -16,7 +16,7 @@ const page = () => {
       <Navbar />
       <Hero />
       <Features />
-      <Demo />
+      {/* <Demo /> */}
       <WhyChoose />
       <WhatYouCanDo />
       <Testimonials />
