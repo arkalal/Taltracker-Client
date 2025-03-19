@@ -5,27 +5,27 @@ const WhyChoose = () => {
   const benefits = [
     {
       icon: <BsDatabase />,
-      title: "Supported by Industry Database",
+      title: "Comprehensive Competency Database",
       description:
-        "Access comprehensive industry-specific data for informed decision-making.",
+        "Access a rich database of competency frameworks tailored to various industries and roles.",
     },
     {
       icon: <BsLightning />,
-      title: "The Speed of Artificial Intelligence",
+      title: "AI-Generated Competency Levels",
       description:
-        "Experience lightning-fast processing and instant results powered by advanced AI.",
+        "Leverage advanced AI to automatically generate meaningful competency levels and benchmarks.",
     },
     {
       icon: <BsPeople />,
-      title: "Created by Industry Veterans",
+      title: "Complete Employee Lifecycle Management",
       description:
-        "Benefit from expertise of seasoned HR professionals who understand your needs.",
+        "Seamlessly manage the entire employee journey from onboarding to professional development.",
     },
     {
       icon: <BsAward />,
-      title: "Validated by Corporate Leaders",
+      title: "Role-Based Competency Mapping",
       description:
-        "Trust a platform that has earned recognition from top industry executives.",
+        "Define precise competency requirements for each role to optimize your talent management strategy.",
     },
   ];
 
@@ -35,7 +35,8 @@ const WhyChoose = () => {
         <div className={styles.header}>
           <h2>Why Choose Our Platform</h2>
           <p>
-            Built with cutting-edge technology to transform your HR operations
+            Built with AI-driven competency mapping to transform your talent
+            management approach
           </p>
         </div>
 

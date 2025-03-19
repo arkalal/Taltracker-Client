@@ -9,16 +9,17 @@ const Hero = () => {
       <div className={styles.container}>
         <div className={styles.content}>
           <h1 className={styles.title}>
-            Transform Your HR
+            Transform Your
             <br />
-            Operations with
+            Talent Management with
             <br />
             <span className={styles.highlight}>TalTracker</span>
           </h1>
 
           <p className={styles.subtitle}>
-            Streamline your HR processes with AI-powered tools for job
-            descriptions, profile analysis, training programs, and assessments.
+            Streamline competency mapping and employee management with
+            AI-powered tools for role definition, skills assessment, and
+            professional development.
           </p>
 
           <div className={styles.cta}>

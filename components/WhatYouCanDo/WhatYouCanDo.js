@@ -14,39 +14,39 @@ const WhatYouCanDo = () => {
   const capabilities = [
     {
       icon: <BsFileText />,
-      title: "Create Job Descriptions",
+      title: "Register Your Company",
       description:
-        "Generate professional job descriptions with AI assistance in minutes, customized to your company's needs.",
+        "Easily register your organization and set up your talent management workspace in minutes.",
     },
     {
       icon: <BsPeople />,
-      title: "Analyze Profiles",
+      title: "Add and Manage Employees",
       description:
-        "Compare candidate profiles against job requirements using advanced AI matching algorithms.",
+        "Build your talent database with comprehensive employee profiles and competency assessments.",
     },
     {
       icon: <BsLightbulb />,
-      title: "Design Training Programs",
+      title: "Define Competency Frameworks",
       description:
-        "Create comprehensive training programs based on skill gaps and development needs.",
+        "Create detailed competency frameworks tailored to your organization's unique requirements.",
     },
     {
       icon: <BsClipboardData />,
-      title: "Track Progress",
+      title: "Generate Competency Levels",
       description:
-        "Monitor employee development and training completion with detailed analytics.",
+        "Use AI to automatically generate different levels of competency with detailed descriptions.",
     },
     {
       icon: <BsGraphUp />,
-      title: "Generate Reports",
+      title: "Manage Organizational Roles",
       description:
-        "Get detailed insights and analytics on competency levels and training effectiveness.",
+        "Define roles with specific competency requirements and track competency fulfillment across your organization.",
     },
     {
       icon: <BsGear />,
-      title: "Automate Workflows",
+      title: "Analyze Competency Gaps",
       description:
-        "Streamline HR processes with automated workflows and intelligent suggestions.",
+        "Identify skill gaps and development opportunities with AI-powered competency analytics.",
     },
   ];
 
@@ -55,7 +55,9 @@ const WhatYouCanDo = () => {
       <div className={styles.container}>
         <div className={styles.header}>
           <h2>What You Can Do with TalTracker</h2>
-          <p>Unlock powerful HR capabilities with our AI-powered platform</p>
+          <p>
+            Streamline your competency mapping and talent management processes
+          </p>
         </div>
 
         <div className={styles.grid}>

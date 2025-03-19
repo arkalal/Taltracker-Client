@@ -5,21 +5,21 @@ const Features = () => {
   const features = [
     {
       icon: <BsFileText />,
-      title: "Job Description Creation",
+      title: "Competency Mapping",
       description:
-        "Create professional job descriptions with AI assistance and customizable templates.",
+        "Create comprehensive competency frameworks and generate different competency levels using AI.",
     },
     {
       icon: <BsPeople />,
-      title: "Profile Analysis",
+      title: "Employee Management",
       description:
-        "Analyze candidate profiles against job requirements with advanced AI matching.",
+        "Manage employees, track their competencies, and identify development opportunities for career growth.",
     },
     {
       icon: <BsBook />,
-      title: "Training & Assessment",
+      title: "Role & Company Management",
       description:
-        "Design comprehensive training programs and assessments for employee development.",
+        "Define organizational roles and register company details for a complete talent management ecosystem.",
     },
   ];
 
@@ -29,8 +29,8 @@ const Features = () => {
         <div className={styles.header}>
           <h2>See TalTracker in Action</h2>
           <p>
-            Explore TalTracker, an AI-Powered HR solution designed to streamline
-            your HR processes
+            Explore TalTracker, an AI-Powered platform designed to transform
+            your talent management strategy
           </p>
         </div>
 
