@@ -60,7 +60,7 @@ const Navbar = () => {
           <Link href="/login" className={styles.loginBtn}>
             Login Now
           </Link>
-          <Link href="/get-started" className={styles.getStartedBtn}>
+          <Link href="/companyRegistration" className={styles.getStartedBtn}>
             Get Started
           </Link>
         </div>

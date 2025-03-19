@@ -1,0 +1,182 @@
+@use "../../../styles/variables" as vars;
+
+.container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(
+    135deg,
+    vars.$primary-color 0%,
+    vars.$primary-dark 100%
+  );
+  padding: 20px;
+}
+
+.loginContainer {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 450px;
+  backdrop-filter: blur(10px);
+}
+
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.tab {
+  flex: 1;
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+
+  .tabIcon {
+    font-size: 1.2rem;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.inputGroup {
+  position: relative;
+  margin-bottom: 20px;
+
+  input {
+    width: 100%;
+    padding: 12px 40px;
+    border: 2px solid vars.$light-gray;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: white;
+
+    &:focus {
+      border-color: vars.$primary-color;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(107, 115, 255, 0.2);
+    }
+
+    &::placeholder {
+      color: vars.$placeholder-color;
+    }
+  }
+
+  .icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: vars.$primary-color;
+    font-size: 1.2rem;
+  }
+}
+
+.error {
+  color: vars.$error-color;
+  font-size: 0.85rem;
+  margin-top: 5px;
+  display: block;
+}
+
+.heading {
+  text-align: center;
+  color: #333;
+  margin-bottom: 30px;
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+.submitButton {
+  width: 100%;
+  background: linear-gradient(
+    135deg,
+    vars.$primary-color 0%,
+    vars.$primary-dark 100%
+  );
+  color: white;
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(107, 115, 255, 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.forgotPassword {
+  text-align: center;
+  margin-top: 20px;
+
+  a {
+    color: vars.$primary-color;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+
+    &:hover {
+      color: vars.$primary-dark;
+      text-decoration: underline;
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: vars.$breakpoint-md) {
+  .loginContainer {
+    padding: 30px 20px;
+  }
+
+  .tab {
+    padding: 12px;
+    font-size: 0.9rem;
+
+    .tabIcon {
+      font-size: 1rem;
+    }
+  }
+
+  .heading {
+    font-size: 1.5rem;
+  }
+
+  .inputGroup {
+    input {
+      padding: 10px 35px;
+      font-size: 0.95rem;
+    }
+
+    .icon {
+      font-size: 1rem;
+    }
+  }
+
+  .submitButton {
+    padding: 12px;
+    font-size: 1rem;
+  }
+}

@@ -22,7 +22,7 @@ const Hero = () => {
           </p>
 
           <div className={styles.cta}>
-            <Link href="/get-started" className={styles.primaryBtn}>
+            <Link href="/companyRegistration" className={styles.primaryBtn}>
               Get Started <BsArrowRight />
             </Link>
             <Link href="/login" className={styles.secondaryBtn}>
