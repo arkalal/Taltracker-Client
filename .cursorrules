@@ -22,7 +22,10 @@ Taltracker Employee management project. Competency Mapping, Company registration
 - We use NPM so always use that. No Yarn.
 - Under the src folder, only the app folder will be there under which we will have the api folder which is the normal NextJS app router concept, but apart from them all the other folders like utils etc, will be under the root project.
 - All the components will be under the components folder under the root project.
-- There must be no duplication of same files in the project. Always check that.
+- There must be no duplication of same files or having any empty folders in the project. Always check that. If you find it, then remove it after checking which is important to keep.
+- Never break or disturb any other existing code while coding something or implementing some changes.
+- Never change or update any code if not instructed. Only Stick to the specific task that has been instructed to you to do.
+- If we are using mongoose schema then always create a models folder in the root of the project where you will create the schema JS files.
 
 # Images to Coding the UI
 
