@@ -18,6 +18,8 @@ import {
   BarElement,
 } from "chart.js";
 import { Pie, Line, Bar } from "react-chartjs-2";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 // Register ChartJS components
 ChartJS.register(
@@ -33,19 +35,33 @@ ChartJS.register(
   Filler
 );
 
-// Theme colors
-const themeColors = {
-  primary: "rgba(107, 115, 255, 0.8)",
-  primaryDark: "rgba(0, 13, 255, 0.8)",
-  secondary: "rgba(75, 192, 192, 0.8)",
-  tertiary: "rgba(153, 102, 255, 0.8)",
-  quaternary: "rgba(255, 159, 64, 0.8)",
-  gray: "rgba(201, 203, 207, 0.8)",
-  primaryTransparent: "rgba(107, 115, 255, 0.2)",
-  white: "rgba(255, 255, 255, 0.8)",
-};
-
 const DashboardHome = () => {
+  const { data: session, status } = useSession();
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/login");
+    } else if (status === "authenticated") {
+      // Save user session to localStorage for dashboard layout
+      localStorage.setItem("userSession", JSON.stringify(session.user));
+      setLoading(false);
+    }
+  }, [status, session, router]);
+
+  // Theme colors
+  const themeColors = {
+    primary: "rgba(107, 115, 255, 0.8)",
+    primaryDark: "rgba(0, 13, 255, 0.8)",
+    secondary: "rgba(75, 192, 192, 0.8)",
+    tertiary: "rgba(153, 102, 255, 0.8)",
+    quaternary: "rgba(255, 159, 64, 0.8)",
+    gray: "rgba(201, 203, 207, 0.8)",
+    primaryTransparent: "rgba(107, 115, 255, 0.2)",
+    white: "rgba(255, 255, 255, 0.8)",
+  };
+
   const [chartData, setChartData] = useState({
     competencyDistribution: {
       labels: ["High", "Medium", "Low", "Undefined"],
@@ -255,6 +271,19 @@ const DashboardHome = () => {
     },
   };
 
+  if (status === "loading" || loading) {
+    return (
+      <div className={styles.loadingContainer}>
+        <div className={styles.loadingSpinner}></div>
+        <p>Loading dashboard...</p>
+      </div>
+    );
+  }
+
+  if (!session) {
+    return null; // Will redirect to login in useEffect
+  }
+
   return (
     <div className={styles.container}>
       <motion.div
@@ -263,8 +292,8 @@ const DashboardHome = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h1>Welcome to TalTracker</h1>
-        <p>Your comprehensive solution for employee competency management</p>
+        <h1>Welcome, {session.user.name}!</h1>
+        <p>Company: {session.user.companyName}</p>
       </motion.div>
 
       <motion.div
@@ -332,6 +361,33 @@ const DashboardHome = () => {
           </motion.span>
         </div>
       </motion.div>
+
+      <div className={styles.actionsSection}>
+        <h2>Quick Actions</h2>
+        <div className={styles.actionCards}>
+          <div
+            className={styles.actionCard}
+            onClick={() => router.push("/dashboard/employees")}
+          >
+            <h3>Add Employee</h3>
+            <p>Add a new employee to your company</p>
+          </div>
+          <div
+            className={styles.actionCard}
+            onClick={() => router.push("/dashboard/roles")}
+          >
+            <h3>Create Role</h3>
+            <p>Define a new role for your organization</p>
+          </div>
+          <div
+            className={styles.actionCard}
+            onClick={() => router.push("/dashboard/competencies")}
+          >
+            <h3>Generate Competency</h3>
+            <p>Create competency mappings for roles</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

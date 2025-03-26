@@ -1,118 +1,126 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
-import styles from "./dashboard.module.scss";
-import { FaHome, FaUserTie, FaUsers, FaBrain, FaBars } from "react-icons/fa";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import styles from "./dashboard.module.scss";
+import { useState, useEffect } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import {
+  FaHome,
+  FaUsers,
+  FaUserTie,
+  FaListAlt,
+  FaSignOutAlt,
+} from "react-icons/fa";
+import { signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 const DashboardLayout = ({ children }) => {
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [activeMenu, setActiveMenu] = useState("Home");
+  const [userName, setUserName] = useState("");
+  const [companyName, setCompanyName] = useState("");
+  const router = useRouter();
   const pathname = usePathname();
+  const { data: session, status } = useSession();
+
+  useEffect(() => {
+    // Redirect if not authenticated
+    if (status === "unauthenticated") {
+      router.push("/login");
+      return;
+    }
+
+    // Get user info from session or localStorage as backup
+    if (session?.user) {
+      setUserName(session.user.name || "User");
+      setCompanyName(session.user.companyName || "Company");
+    } else {
+      // Fallback to localStorage if session isn't available yet
+      const userInfo = localStorage.getItem("userSession");
+      if (userInfo) {
+        try {
+          const user = JSON.parse(userInfo);
+          setUserName(user.name || "User");
+          setCompanyName(user.companyName || "Company");
+        } catch (error) {
+          console.error("Error parsing user info:", error);
+        }
+      }
+    }
+
+    // Set active menu based on current path
+    if (pathname === "/dashboard") {
+      setActiveMenu("Home");
+    } else if (pathname.includes("/employees")) {
+      setActiveMenu("Employees");
+    } else if (pathname.includes("/roles")) {
+      setActiveMenu("Roles");
+    } else if (pathname.includes("/competencies")) {
+      setActiveMenu("Competencies");
+    }
+  }, [pathname, session, status, router]);
+
+  const handleLogout = async () => {
+    // Clear local storage
+    localStorage.removeItem("userSession");
+
+    // Sign out using NextAuth
+    await signOut({ redirect: true, callbackUrl: "/" });
+  };
 
   const menuItems = [
-    { icon: FaHome, label: "Home", path: "/dashboard" },
-    { icon: FaBrain, label: "Competency", path: "/dashboard/competency" },
-    { icon: FaUserTie, label: "Add Roles", path: "/dashboard/roles" },
-    { icon: FaUsers, label: "Add Employees", path: "/dashboard/employees" },
+    { name: "Home", icon: <FaHome />, path: "/dashboard" },
+    { name: "Employees", icon: <FaUsers />, path: "/dashboard/employees" },
+    { name: "Roles", icon: <FaUserTie />, path: "/dashboard/roles" },
     {
-      icon: FaBrain,
-      label: "Generate Competency",
-      path: "/dashboard/generate",
+      name: "Competencies",
+      icon: <FaListAlt />,
+      path: "/dashboard/competencies",
     },
   ];
 
-  const sidebarVariants = {
-    expanded: {
-      width: "250px",
-      transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 30,
-      },
-    },
-    collapsed: {
-      width: "70px",
-      transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 30,
-      },
-    },
-  };
-
-  const menuItemVariants = {
-    expanded: {
-      x: 0,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 30,
-      },
-    },
-    collapsed: {
-      x: -20,
-      opacity: 0,
-      transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 30,
-      },
-    },
-  };
+  // Show loading if session is loading
+  if (status === "loading") {
+    return (
+      <div className={styles.loadingContainer}>
+        <div className={styles.loadingSpinner}></div>
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.dashboardContainer}>
-      <motion.div
-        className={styles.sidebar}
-        variants={sidebarVariants}
-        animate={isSidebarCollapsed ? "collapsed" : "expanded"}
-      >
+      <div className={styles.sidebar} style={{ width: "250px" }}>
         <div className={styles.sidebarHeader}>
-          <motion.button
-            className={styles.toggleButton}
-            onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <FaBars />
-          </motion.button>
-          {!isSidebarCollapsed && (
-            <motion.h1
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
-              TalTracker
-            </motion.h1>
-          )}
+          <h1>TalTracker</h1>
         </div>
 
-        <nav className={styles.sidebarNav}>
-          {menuItems.map((item, index) => (
-            <Link href={item.path} key={index}>
-              <motion.div
-                className={`${styles.menuItem} ${
-                  pathname === item.path ? styles.active : ""
-                }`}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <item.icon className={styles.icon} />
-                <motion.span
-                  variants={menuItemVariants}
-                  animate={isSidebarCollapsed ? "collapsed" : "expanded"}
-                  className={styles.label}
-                >
-                  {item.label}
-                </motion.span>
-              </motion.div>
+        <div className={styles.sidebarNav}>
+          {menuItems.map((item) => (
+            <Link
+              href={item.path}
+              key={item.name}
+              className={`${styles.menuItem} ${
+                activeMenu === item.name ? styles.active : ""
+              }`}
+              onClick={() => setActiveMenu(item.name)}
+            >
+              <span className={styles.icon}>{item.icon}</span>
+              <span className={styles.label}>{item.name}</span>
             </Link>
           ))}
-        </nav>
-      </motion.div>
+          <div
+            className={styles.menuItem}
+            onClick={handleLogout}
+            style={{ marginTop: "auto" }}
+          >
+            <span className={styles.icon}>
+              <FaSignOutAlt />
+            </span>
+            <span className={styles.label}>Logout</span>
+          </div>
+        </div>
+      </div>
 
       <main className={styles.mainContent}>{children}</main>
     </div>

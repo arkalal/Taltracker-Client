@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import styles from "./companyRegistration.module.scss";
 import {
@@ -10,9 +10,16 @@ import {
   FaPhone,
   FaGlobe,
   FaLock,
+  FaEye,
+  FaEyeSlash,
 } from "react-icons/fa";
+import { registerCompany } from "../../../actions/auth-actions.js";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 const CompanyRegistration = () => {
+  const { data: session, status } = useSession();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -23,7 +30,28 @@ const CompanyRegistration = () => {
     password: "",
     confirmPassword: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState({});
+  const [formError, setFormError] = useState("");
+  const [formSuccess, setFormSuccess] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+
+  // Check if user is already logged in
+  useEffect(() => {
+    if (status === "authenticated" && session) {
+      router.push("/dashboard");
+    }
+  }, [status, session, router]);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
 
   const validateForm = () => {
     const newErrors = {};
@@ -74,12 +102,51 @@ const CompanyRegistration = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      // Handle form submission
-      console.log("Form submitted:", formData);
+
+    if (!validateForm()) return;
+
+    setIsLoading(true);
+    setFormError("");
+    setFormSuccess("");
+
+    // Create FormData object for the server action
+    const formDataObj = new FormData();
+    Object.entries(formData).forEach(([key, value]) => {
+      formDataObj.append(key, value);
+    });
+
+    try {
+      const result = await registerCompany(formDataObj);
+
+      if (result?.error) {
+        setFormError(result.error);
+      } else if (result?.success) {
+        setFormSuccess(result.success);
+        // Reset form after successful registration
+        setFormData({
+          name: "",
+          email: "",
+          mobile: "",
+          companyName: "",
+          role: "",
+          website: "",
+          password: "",
+          confirmPassword: "",
+        });
+
+        // Redirect to login after a short delay
+        setTimeout(() => {
+          router.push("/login");
+        }, 2000);
+      }
+    } catch (error) {
+      setFormError("An error occurred during registration. Please try again.");
+      console.error("Registration error:", error);
     }
+
+    setIsLoading(false);
   };
 
   const handleChange = (e) => {
@@ -99,6 +166,27 @@ const CompanyRegistration = () => {
         transition={{ duration: 0.5 }}
       >
         <h1 className={styles.formTitle}>Company Registration</h1>
+
+        {formError && (
+          <motion.div
+            className={styles.error}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            {formError}
+          </motion.div>
+        )}
+
+        {formSuccess && (
+          <motion.div
+            className={styles.success}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            {formSuccess}
+          </motion.div>
+        )}
+
         <form className={styles.formBody} onSubmit={handleSubmit}>
           <div className={styles.inputGroup}>
             <FaUser className={styles.icon} />
@@ -182,12 +270,19 @@ const CompanyRegistration = () => {
           <div className={styles.inputGroup}>
             <FaLock className={styles.icon} />
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               name="password"
               placeholder="Password"
               value={formData.password}
               onChange={handleChange}
             />
+            <button
+              type="button"
+              className={styles.passwordToggle}
+              onClick={togglePasswordVisibility}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
             {errors.password && (
               <span className={styles.error}>{errors.password}</span>
             )}
@@ -196,12 +291,19 @@ const CompanyRegistration = () => {
           <div className={styles.inputGroup}>
             <FaLock className={styles.icon} />
             <input
-              type="password"
+              type={showConfirmPassword ? "text" : "password"}
               name="confirmPassword"
               placeholder="Confirm Password"
               value={formData.confirmPassword}
               onChange={handleChange}
             />
+            <button
+              type="button"
+              className={styles.passwordToggle}
+              onClick={toggleConfirmPasswordVisibility}
+            >
+              {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
             {errors.confirmPassword && (
               <span className={styles.error}>{errors.confirmPassword}</span>
             )}
@@ -212,9 +314,14 @@ const CompanyRegistration = () => {
             className={styles.registerButton}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
+            disabled={isLoading}
           >
-            Register
+            {isLoading ? "Registering..." : "Register"}
           </motion.button>
+
+          <div className={styles.loginLink}>
+            Already have an account? <Link href="/login">Login</Link>
+          </div>
         </form>
       </motion.div>
     </div>

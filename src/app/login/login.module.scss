@@ -54,43 +54,91 @@
 
 .inputGroup {
   position: relative;
-  margin-bottom: 20px;
-
-  input {
-    width: 100%;
-    padding: 12px 40px;
-    border: 2px solid vars.$light-gray;
-    border-radius: 10px;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    background: white;
-
-    &:focus {
-      border-color: vars.$primary-color;
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(107, 115, 255, 0.2);
-    }
-
-    &::placeholder {
-      color: vars.$placeholder-color;
-    }
-  }
+  margin-bottom: 1.5rem;
 
   .icon {
     position: absolute;
-    left: 12px;
+    left: 15px;
     top: 50%;
     transform: translateY(-50%);
-    color: vars.$primary-color;
-    font-size: 1.2rem;
+    color: #999;
+  }
+
+  input {
+    width: 100%;
+    padding: 15px 15px 15px 45px;
+    border: 1px solid #eaeaea;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+
+    &:focus {
+      outline: none;
+      border-color: #6b73ff;
+      box-shadow: 0 0 0 2px rgba(107, 115, 255, 0.2);
+    }
+  }
+
+  select {
+    width: 100%;
+    padding: 15px 15px 15px 45px;
+    border: 1px solid #eaeaea;
+    border-radius: 5px;
+    font-size: 1rem;
+    background-color: white;
+    transition: border-color 0.3s, box-shadow 0.3s;
+
+    &:focus {
+      outline: none;
+      border-color: #6b73ff;
+      box-shadow: 0 0 0 2px rgba(107, 115, 255, 0.2);
+    }
+  }
+
+  .passwordToggle {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #999;
+
+    &:hover {
+      color: #6b73ff;
+    }
+  }
+
+  .error {
+    color: #e74c3c;
+    font-size: 0.8rem;
+    margin-top: 5px;
+    display: block;
   }
 }
 
+// Add these styles for form error and success messages
+.error,
+.success {
+  padding: 10px 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  text-align: center;
+  width: 100%;
+}
+
 .error {
-  color: vars.$error-color;
-  font-size: 0.85rem;
-  margin-top: 5px;
-  display: block;
+  background-color: rgba(231, 76, 60, 0.1);
+  color: #e74c3c;
+  border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+.success {
+  background-color: rgba(46, 204, 113, 0.1);
+  color: #2ecc71;
+  border: 1px solid rgba(46, 204, 113, 0.3);
 }
 
 .heading {

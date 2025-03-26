@@ -1,17 +1,45 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import styles from "./login.module.scss";
-import { FaEnvelope, FaLock, FaBuilding, FaUser } from "react-icons/fa";
+import {
+  FaEnvelope,
+  FaLock,
+  FaBuilding,
+  FaUser,
+  FaEye,
+  FaEyeSlash,
+} from "react-icons/fa";
+import { loginCompany } from "../../../actions/auth-actions";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 const Login = () => {
-  const [activeTab, setActiveTab] = useState("employee");
+  const [activeTab, setActiveTab] = useState("company");
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
+  const [formError, setFormError] = useState("");
+  const [formSuccess, setFormSuccess] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+  const { data: session, status } = useSession();
+
+  // Check if user is already logged in
+  useEffect(() => {
+    if (status === "authenticated" && session) {
+      router.push("/dashboard");
+    }
+  }, [session, status, router]);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const validateForm = () => {
     const newErrors = {};
@@ -29,13 +57,52 @@ const Login = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      // Handle form submission
-      console.log("Form submitted:", { type: activeTab, ...formData });
+    if (!validateForm()) return;
+
+    setIsLoading(true);
+    setFormError("");
+    setFormSuccess("");
+
+    if (activeTab === "company") {
+      try {
+        const result = await signIn("company-login", {
+          email: formData.email,
+          password: formData.password,
+          redirect: false,
+        });
+
+        if (result?.error) {
+          setFormError(result.error || "Invalid email or password");
+        } else {
+          setFormSuccess("Login successful");
+
+          setTimeout(() => {
+            router.push("/dashboard");
+          }, 1000);
+        }
+      } catch (error) {
+        console.error("Login error:", error);
+        setFormError(`An error occurred during login: ${error.message}`);
+      }
+    } else {
+      // Employee login is not implemented yet
+      setFormError("Employee login is not available yet.");
     }
+
+    setIsLoading(false);
   };
+
+  // If checking authentication status
+  if (status === "loading") {
+    return (
+      <div className={styles.loadingContainer}>
+        <div className={styles.loadingSpinner}></div>
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -118,6 +185,26 @@ const Login = () => {
           </motion.button>
         </div>
 
+        {formError && (
+          <motion.div
+            className={styles.error}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            {formError}
+          </motion.div>
+        )}
+
+        {formSuccess && (
+          <motion.div
+            className={styles.success}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            {formSuccess}
+          </motion.div>
+        )}
+
         <AnimatePresence mode="wait">
           <motion.form
             key={activeTab}
@@ -148,12 +235,19 @@ const Login = () => {
             <div className={styles.inputGroup}>
               <FaLock className={styles.icon} />
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="Password"
                 value={formData.password}
                 onChange={handleChange}
               />
+              <button
+                type="button"
+                className={styles.passwordToggle}
+                onClick={togglePasswordVisibility}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
               {errors.password && (
                 <span className={styles.error}>{errors.password}</span>
               )}
@@ -164,8 +258,9 @@ const Login = () => {
               className={styles.submitButton}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
+              disabled={isLoading}
             >
-              Login
+              {isLoading ? "Logging in..." : "Login"}
             </motion.button>
 
             <div className={styles.forgotPassword}>
