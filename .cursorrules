@@ -26,6 +26,7 @@ Taltracker Employee management project. Competency Mapping, Company registration
 - Never break or disturb any other existing code while coding something or implementing some changes.
 - Never change or update any code if not instructed. Only Stick to the specific task that has been instructed to you to do.
 - If we are using mongoose schema then always create a models folder in the root of the project where you will create the schema JS files.
+- Do not miss any points that I have explained to you. Make sure you follow and implement each and everything that I have told you in the composer.
 
 # Images to Coding the UI
 
