@@ -88,8 +88,11 @@
   }
 
   .icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-size: 1.2rem;
-    min-width: 24px;
+    width: 20px;
   }
 
   .label {
@@ -132,6 +135,14 @@
   &.active {
     background: rgba(107, 115, 255, 0.2);
     color: vars.$primary-color;
+  }
+
+  .icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    font-size: 0.9rem;
   }
 }
 
