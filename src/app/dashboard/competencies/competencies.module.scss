@@ -172,13 +172,20 @@
   }
 }
 
-/* New Table Styles */
+/* Modern Table Styles */
 .tableContainer {
   margin-top: 20px;
   width: 100%;
   overflow-x: auto;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+  }
 }
 
 .competencyTable {
@@ -186,92 +193,152 @@
   border-collapse: separate;
   border-spacing: 0;
   background-color: white;
-  border-radius: 10px;
   overflow: hidden;
 
   th,
   td {
-    padding: 15px;
+    padding: 18px 20px;
     text-align: left;
-    border-bottom: 1px solid #e2e8f0;
+    position: relative;
   }
 
   th {
-    background-color: #2c3e50;
+    background-color: white;
     font-weight: 600;
-    color: white;
+    color: #374151;
+    border-bottom: 2px solid #f3f4f6;
+    letter-spacing: 0.5px;
+    font-size: 0.9rem;
+    text-transform: uppercase;
     position: sticky;
     top: 0;
     z-index: 10;
-    padding: 16px 15px;
-    text-transform: uppercase;
-    font-size: 0.9rem;
-    letter-spacing: 0.5px;
+  }
+
+  .evenRoleRow,
+  .oddRoleRow {
+    transition: all 0.2s ease-in-out;
+    border-bottom: 1px solid #f3f4f6;
+
+    &:hover {
+      background-color: #f9fafb;
+    }
+
+    td {
+      transition: all 0.2s ease;
+    }
   }
 
   .evenRoleRow {
-    background-color: #f8fafc;
+    background-color: white;
   }
 
   .oddRoleRow {
-    background-color: #f1f5f9;
-  }
-
-  tbody tr:hover {
-    background-color: #e0f2fe;
+    background-color: #fafafa;
   }
 
   .jobRoleCell {
     font-weight: 600;
-    background-color: #334155;
-    color: white;
+    color: #111827;
     vertical-align: middle;
-    font-size: 1.1rem;
-    border-right: 4px solid #94a3b8;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s ease;
+    font-size: 1rem;
+    border-right: 1px solid #f3f4f6;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 3px;
+      width: 0;
+      background: linear-gradient(90deg, #3b82f6, #60a5fa);
+      transition: width 0.3s ease;
+    }
 
     &:hover {
-      background-color: #475569;
+      color: #2563eb;
+
+      &::after {
+        width: 100%;
+      }
+    }
+  }
+
+  .technicalType,
+  .functionalType,
+  .behavioralType {
+    font-weight: 500;
+    width: 180px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    position: relative;
+    padding-left: 30px;
+
+    &::before {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 16px;
+      margin-right: 10px;
+    }
+
+    &:hover {
+      transform: translateX(5px);
     }
   }
 
   .technicalType {
-    font-weight: 500;
-    width: 150px;
-    border-left: 5px solid #3b82f6;
-    background-color: rgba(59, 130, 246, 0.08);
-
     &::before {
       content: "●";
       color: #3b82f6;
-      margin-right: 8px;
+    }
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 3px;
+      background-color: #3b82f6;
+      opacity: 0.5;
     }
   }
 
   .functionalType {
-    font-weight: 500;
-    width: 150px;
-    border-left: 5px solid #10b981;
-    background-color: rgba(16, 185, 129, 0.08);
-
     &::before {
       content: "●";
       color: #10b981;
-      margin-right: 8px;
+    }
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 3px;
+      background-color: #10b981;
+      opacity: 0.5;
     }
   }
 
   .behavioralType {
-    font-weight: 500;
-    width: 150px;
-    border-left: 5px solid #f59e0b;
-    background-color: rgba(245, 158, 11, 0.08);
-
     &::before {
       content: "●";
       color: #f59e0b;
-      margin-right: 8px;
+    }
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 3px;
+      background-color: #f59e0b;
+      opacity: 0.5;
     }
   }
 
@@ -280,19 +347,37 @@
     list-style-type: none;
     padding-left: 0;
     margin: 0;
+    transition: opacity 0.3s ease;
 
     li {
-      margin-bottom: 8px;
-      padding: 8px 12px;
+      margin-bottom: 10px;
+      padding: 10px 15px;
       background-color: white;
-      border-radius: 4px;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      border-radius: 6px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+      border: 1px solid #f3f4f6;
       position: relative;
+      transition: all 0.25s ease;
+      transform-origin: left;
+
+      &:hover {
+        transform: translateX(5px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        border-color: #e5e7eb;
+      }
 
       &::before {
         content: "→";
-        margin-right: 8px;
+        position: absolute;
+        left: -15px;
+        opacity: 0;
         color: #64748b;
+        transition: all 0.25s ease;
+      }
+
+      &:hover::before {
+        left: 0;
+        opacity: 1;
       }
 
       &:last-child {
@@ -305,10 +390,16 @@
     color: #94a3b8;
     font-style: italic;
     display: block;
-    padding: 10px;
+    padding: 15px;
     text-align: center;
-    border: 1px dashed #cbd5e1;
-    border-radius: 4px;
+    border: 1px dashed #e5e7eb;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: #f9fafb;
+      border-color: #d1d5db;
+    }
   }
 }
 
