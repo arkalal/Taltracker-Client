@@ -1,0 +1,15 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Image to Coding the UI
+
+- If you are given an UI image and asked to build the excat UI as shown in the image pixel perfectly with no changes, analyse the UI components, styles, colors, alignments, shades, animations everything shown in the image attached and code the excat replica of the UI shown in the image. You must be the perfect analyser of the image and convert and clone the UI shown in the image into excat real UI in our app if instructed with no changes. The UI in our app should be the same as shown in the image attached.
+
+Make the excat replica of this UI as you can see in the image attached.
+
+Observe the detailing of the UI in the image, the components, colors, texts, fonts, gradients, styling, alignments, shapes and everything and convert the UI shown in the image to the real UI in this project. There must not be even 1% change in the UI that you will code and build. It must be excatly the same as shown in the image attached.
+
+Do it perfectly without breaking any other existing code.

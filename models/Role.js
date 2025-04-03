@@ -16,6 +16,11 @@ const RoleSchema = new mongoose.Schema({
     required: [true, "Organization is required"],
     trim: true,
   },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: false,
+  },
   jdLink: {
     type: String,
     default: "taltracker.com",

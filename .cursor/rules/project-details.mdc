@@ -1,0 +1,9 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Project Details
+
+Taltracker Employee management project. Competency Mapping, Company registration, adding roles, adding employees, adding competency, generating different levels for competency using AI.

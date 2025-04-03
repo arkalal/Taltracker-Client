@@ -70,7 +70,11 @@ const DashboardLayout = ({ children }) => {
       }
     } else if (pathname.includes("/competencies")) {
       setActiveMenu("Competencies");
-      setActiveSubMenu("");
+      setOpenSubMenu("Competencies");
+
+      if (pathname.includes("/view")) {
+        setActiveSubMenu("View Competencies");
+      }
     }
   }, [pathname, session, status, router]);
 
@@ -121,7 +125,14 @@ const DashboardLayout = ({ children }) => {
     {
       name: "Competencies",
       icon: <FaListAlt />,
-      path: "/dashboard/competencies",
+      hasSubMenu: true,
+      subMenuItems: [
+        {
+          name: "View Competencies",
+          icon: <FaTable />,
+          path: "/dashboard/competencies/view",
+        },
+      ],
     },
   ];
 
