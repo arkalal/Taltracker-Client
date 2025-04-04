@@ -13,6 +13,8 @@ import {
   FaChevronRight,
   FaPlus,
   FaTable,
+  FaUserPlus,
+  FaUserFriends,
 } from "react-icons/fa";
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
@@ -103,7 +105,19 @@ const DashboardLayout = ({ children }) => {
     {
       name: "Employees",
       icon: <FaUsers />,
-      path: "/dashboard/employees",
+      hasSubMenu: true,
+      subMenuItems: [
+        {
+          name: "Create Employee",
+          icon: <FaUserPlus />,
+          path: "/dashboard/employees/create",
+        },
+        {
+          name: "View Employees",
+          icon: <FaUserFriends />,
+          path: "/dashboard/employees/view",
+        },
+      ],
     },
     {
       name: "Roles",

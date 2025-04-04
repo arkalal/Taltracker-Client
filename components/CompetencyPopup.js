@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from "../src/app/dashboard/roles/roles.module.scss";
 
 const CompetencyPopup = ({
@@ -15,12 +15,53 @@ const CompetencyPopup = ({
   const [isEditing, setIsEditing] = useState(true);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [allExistingCompetencies, setAllExistingCompetencies] = useState([]);
+  const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const suggestionRef = useRef(null);
+  const inputRef = useRef(null);
 
   useEffect(() => {
     if (isOpen && roleId) {
       fetchCompetencies();
+      fetchAllCompetencies();
     }
   }, [isOpen, roleId, competencyType]);
+
+  // Close suggestions when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        suggestionRef.current &&
+        !suggestionRef.current.contains(event.target) &&
+        inputRef.current &&
+        !inputRef.current.contains(event.target)
+      ) {
+        setShowSuggestions(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // Update suggestions as user types
+  useEffect(() => {
+    if (newCompetency.trim().length > 0) {
+      const filtered = allExistingCompetencies.filter(
+        (comp) =>
+          comp.toLowerCase().includes(newCompetency.toLowerCase()) &&
+          !competencies.includes(comp)
+      );
+      setSuggestions(filtered);
+      setShowSuggestions(filtered.length > 0);
+    } else {
+      setSuggestions([]);
+      setShowSuggestions(false);
+    }
+  }, [newCompetency, allExistingCompetencies, competencies]);
 
   const fetchCompetencies = async () => {
     try {
@@ -47,6 +88,29 @@ const CompetencyPopup = ({
       setCompetencies([]);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchAllCompetencies = async () => {
+    try {
+      const response = await fetch("/api/competencies");
+      if (response.ok) {
+        const data = await response.json();
+        // Extract all unique competencies from different roles and types
+        const allCompetencies = new Set();
+
+        if (data.competencies && data.competencies.length > 0) {
+          data.competencies.forEach((comp) => {
+            if (comp.competencies && Array.isArray(comp.competencies)) {
+              comp.competencies.forEach((c) => allCompetencies.add(c));
+            }
+          });
+        }
+
+        setAllExistingCompetencies(Array.from(allCompetencies));
+      }
+    } catch (error) {
+      console.error("Error fetching all competencies:", error);
     }
   };
 
@@ -88,7 +152,15 @@ const CompetencyPopup = ({
     if (newCompetency.trim()) {
       setCompetencies([...competencies, newCompetency.trim()]);
       setNewCompetency("");
+      setShowSuggestions(false);
     }
+  };
+
+  const handleSelectSuggestion = (suggestion) => {
+    setCompetencies([...competencies, suggestion]);
+    setNewCompetency("");
+    setShowSuggestions(false);
+    inputRef.current.focus();
   };
 
   const handleRemoveCompetency = (index) => {
@@ -99,6 +171,48 @@ const CompetencyPopup = ({
     if (e.key === "Enter") {
       e.preventDefault();
       handleAddCompetency();
+    } else if (
+      e.key === "ArrowDown" &&
+      showSuggestions &&
+      suggestions.length > 0
+    ) {
+      // Focus the first suggestion with arrow down
+      const firstSuggestion = document.querySelector(
+        `.${styles.suggestionItem}`
+      );
+      if (firstSuggestion) {
+        firstSuggestion.focus();
+      }
+    }
+  };
+
+  const handleSuggestionKeyDown = (e, index, suggestion) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleSelectSuggestion(suggestion);
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      // Move focus to the next suggestion
+      const nextSuggestion = document.querySelectorAll(
+        `.${styles.suggestionItem}`
+      )[index + 1];
+      if (nextSuggestion) {
+        nextSuggestion.focus();
+      }
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      if (index === 0) {
+        // Move focus back to input if at first suggestion
+        inputRef.current.focus();
+      } else {
+        // Move focus to the previous suggestion
+        const prevSuggestion = document.querySelectorAll(
+          `.${styles.suggestionItem}`
+        )[index - 1];
+        if (prevSuggestion) {
+          prevSuggestion.focus();
+        }
+      }
     }
   };
 
@@ -123,14 +237,38 @@ const CompetencyPopup = ({
             <div className={styles.competencyList}>
               {isEditing ? (
                 <div className={styles.addCompetencyForm}>
-                  <input
-                    type="text"
-                    value={newCompetency}
-                    onChange={(e) => setNewCompetency(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                    placeholder="Enter a competency"
-                    disabled={!isEditing}
-                  />
+                  <div className={styles.inputWithSuggestions}>
+                    <input
+                      ref={inputRef}
+                      type="text"
+                      value={newCompetency}
+                      onChange={(e) => setNewCompetency(e.target.value)}
+                      onKeyDown={handleKeyPress}
+                      onFocus={() => setShowSuggestions(suggestions.length > 0)}
+                      placeholder="Enter a competency"
+                      disabled={!isEditing}
+                    />
+                    {showSuggestions && (
+                      <div
+                        className={styles.suggestionsList}
+                        ref={suggestionRef}
+                      >
+                        {suggestions.map((suggestion, index) => (
+                          <div
+                            key={index}
+                            className={styles.suggestionItem}
+                            onClick={() => handleSelectSuggestion(suggestion)}
+                            onKeyDown={(e) =>
+                              handleSuggestionKeyDown(e, index, suggestion)
+                            }
+                            tabIndex="0"
+                          >
+                            {suggestion}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                   <button
                     onClick={handleAddCompetency}
                     disabled={!isEditing || !newCompetency.trim()}

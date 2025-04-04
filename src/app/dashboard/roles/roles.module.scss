@@ -283,15 +283,47 @@
   gap: 10px;
   margin-bottom: 15px;
 
+  .inputWithSuggestions {
+    position: relative;
+    flex: 1;
+  }
+
   input {
     flex: 1;
     padding: 10px;
     border: 1px solid #e2e8f0;
     border-radius: 4px;
+    width: 100%;
 
     &:focus {
       outline: none;
       border-color: #3a82f7;
+    }
+  }
+
+  .suggestionsList {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+  }
+
+  .suggestionItem {
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover,
+    &:focus {
+      background-color: #f1f5f9;
+      outline: none;
     }
   }
 
