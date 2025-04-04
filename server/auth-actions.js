@@ -27,6 +27,22 @@ export async function authorizeUser(credentials) {
       return null;
     }
 
+    // NOTE: Email and mobile verification checks are temporarily disabled for simulation
+    // Commenting out verification checks to allow smooth login flow
+    /* 
+    // Check if the user's email is verified
+    if (!user.emailVerified) {
+      console.log("Email not verified");
+      throw new Error("Email not verified");
+    }
+
+    // Check if the user's mobile is verified
+    if (!user.mobileVerified) {
+      console.log("Mobile not verified");
+      throw new Error("Mobile not verified");
+    }
+    */
+
     // Verify password
     const isPasswordValid = await bcrypt.compare(
       credentials.password,

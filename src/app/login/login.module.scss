@@ -11,6 +11,55 @@
     vars.$primary-dark 100%
   );
   padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+// Decorative floating icons
+.floatingIcon {
+  position: absolute;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 2.5rem;
+  z-index: 2;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
+}
+
+.icon1 {
+  top: 15%;
+  left: 15%;
+  font-size: 3rem;
+}
+
+.icon2 {
+  top: 25%;
+  right: 15%;
+  font-size: 2.8rem;
+}
+
+.icon3 {
+  bottom: 20%;
+  left: 20%;
+  font-size: 2.5rem;
+}
+
+.icon4 {
+  bottom: 30%;
+  right: 20%;
+  font-size: 2.7rem;
+}
+
+// Glass background effect
+.glassBg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 80%;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  backdrop-filter: blur(5px);
+  z-index: 1;
 }
 
 .loginContainer {
@@ -21,6 +70,8 @@
   width: 100%;
   max-width: 450px;
   backdrop-filter: blur(10px);
+  position: relative;
+  z-index: 3;
 }
 
 .tabs {
@@ -144,9 +195,17 @@
 .heading {
   text-align: center;
   color: #333;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
   font-size: 1.75rem;
   font-weight: 600;
+}
+
+.welcomeMessage {
+  text-align: center;
+  color: #666;
+  margin-bottom: 25px;
+  font-size: 0.95rem;
+  line-height: 1.5;
 }
 
 .submitButton {
@@ -184,6 +243,24 @@
     color: vars.$primary-color;
     text-decoration: none;
     font-size: 0.9rem;
+    transition: all 0.3s ease;
+
+    &:hover {
+      color: vars.$primary-dark;
+      text-decoration: underline;
+    }
+  }
+}
+
+.signupLink {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 0.9rem;
+
+  a {
+    color: vars.$primary-color;
+    text-decoration: none;
+    font-weight: 500;
     transition: all 0.3s ease;
 
     &:hover {

@@ -10,11 +10,16 @@ import {
   FaUser,
   FaEye,
   FaEyeSlash,
+  FaChartLine,
+  FaUsers,
+  FaUserGraduate,
+  FaShieldAlt,
 } from "react-icons/fa";
 import { loginCompany } from "../../../actions/auth-actions";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 const Login = () => {
   const [activeTab, setActiveTab] = useState("company");
@@ -156,8 +161,58 @@ const Login = () => {
     },
   };
 
+  // Animation variants for the floating elements
+  const floatingIconVariants = {
+    animate: {
+      y: [0, -10, 0],
+      transition: {
+        duration: 3,
+        repeat: Infinity,
+        ease: "easeInOut",
+      },
+    },
+  };
+
   return (
     <div className={styles.container}>
+      {/* Decorative floating elements */}
+      <motion.div
+        className={`${styles.floatingIcon} ${styles.icon1}`}
+        variants={floatingIconVariants}
+        animate="animate"
+      >
+        <FaChartLine />
+      </motion.div>
+
+      <motion.div
+        className={`${styles.floatingIcon} ${styles.icon2}`}
+        variants={floatingIconVariants}
+        animate="animate"
+        transition={{ delay: 0.5 }}
+      >
+        <FaUsers />
+      </motion.div>
+
+      <motion.div
+        className={`${styles.floatingIcon} ${styles.icon3}`}
+        variants={floatingIconVariants}
+        animate="animate"
+        transition={{ delay: 1 }}
+      >
+        <FaUserGraduate />
+      </motion.div>
+
+      <motion.div
+        className={`${styles.floatingIcon} ${styles.icon4}`}
+        variants={floatingIconVariants}
+        animate="animate"
+        transition={{ delay: 1.5 }}
+      >
+        <FaShieldAlt />
+      </motion.div>
+
+      <div className={styles.glassBg}></div>
+
       <motion.div
         className={styles.loginContainer}
         initial={{ opacity: 0, y: 20 }}
@@ -218,6 +273,10 @@ const Login = () => {
               {activeTab === "employee" ? "Employee Login" : "Company Login"}
             </h2>
 
+            <div className={styles.welcomeMessage}>
+              Welcome back! Log in to manage your talent tracking system.
+            </div>
+
             <div className={styles.inputGroup}>
               <FaEnvelope className={styles.icon} />
               <input
@@ -265,6 +324,11 @@ const Login = () => {
 
             <div className={styles.forgotPassword}>
               <a href="#">Forgot Password?</a>
+            </div>
+
+            <div className={styles.signupLink}>
+              Don&apos;t have an account?{" "}
+              <Link href="/companyRegistration">Sign up</Link>
             </div>
           </motion.form>
         </AnimatePresence>

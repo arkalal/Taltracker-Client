@@ -46,6 +46,23 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  emailVerified: {
+    type: Boolean,
+    default: false,
+  },
+  mobileVerified: {
+    type: Boolean,
+    default: false,
+  },
+  emailOTP: {
+    type: String,
+  },
+  mobileOTP: {
+    type: String,
+  },
+  otpExpiry: {
+    type: Date,
+  },
 });
 
 // Fix for client-side rendering issues using optional chaining

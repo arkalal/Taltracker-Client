@@ -12,6 +12,55 @@
   );
   padding: 20px;
   overflow-y: auto;
+  position: relative;
+  overflow: hidden;
+}
+
+// Decorative floating icons
+.floatingIcon {
+  position: absolute;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 2.5rem;
+  z-index: 2;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
+}
+
+.icon1 {
+  top: 15%;
+  left: 15%;
+  font-size: 3rem;
+}
+
+.icon2 {
+  top: 25%;
+  right: 15%;
+  font-size: 2.8rem;
+}
+
+.icon3 {
+  bottom: 20%;
+  left: 20%;
+  font-size: 2.5rem;
+}
+
+.icon4 {
+  bottom: 30%;
+  right: 20%;
+  font-size: 2.7rem;
+}
+
+// Glass background effect
+.glassBg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 80%;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  backdrop-filter: blur(5px);
+  z-index: 1;
 }
 
 .formContainer {
@@ -24,6 +73,8 @@
   max-height: 90vh;
   overflow-y: auto;
   backdrop-filter: blur(10px);
+  position: relative;
+  z-index: 3;
 
   .formTitle {
     text-align: center;
@@ -167,6 +218,32 @@
   }
 }
 
+.signupMessage {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #666;
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+.backButton {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  color: vars.$primary-color;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-bottom: 20px;
+  padding: 5px 0;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 // Responsive Design
 @media (max-width: vars.$breakpoint-md) {
   .container {
@@ -203,4 +280,57 @@
     padding: 12px;
     font-size: 1rem;
   }
+}
+
+.verificationSummary {
+  width: 100%;
+  padding: 10px;
+}
+
+.verificationList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.verificationItem {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background-color: rgba(46, 204, 113, 0.1);
+  border: 1px solid rgba(46, 204, 113, 0.3);
+  border-radius: 8px;
+}
+
+.verificationIcon {
+  font-size: 2rem;
+  color: #2ecc71;
+  filter: drop-shadow(0 2px 5px rgba(46, 204, 113, 0.3));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.verificationDetails {
+  h3 {
+    margin: 0 0 5px 0;
+    font-size: 1.1rem;
+    color: #333;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #666;
+  }
+}
+
+.summaryMessage {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #666;
+  line-height: 1.5;
+  font-size: 0.95rem;
 }

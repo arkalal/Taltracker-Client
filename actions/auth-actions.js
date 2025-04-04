@@ -18,8 +18,16 @@ export async function registerCompany(formData) {
     const website = formData.get("website") || "";
     const password = formData.get("password");
     const confirmPassword = formData.get("confirmPassword");
+    const emailVerified = formData.get("emailVerified") === "true";
+    const mobileVerified = formData.get("mobileVerified") === "true";
 
-    console.log("Form data processed:", { email, companyName, role });
+    console.log("Form data processed:", {
+      email,
+      companyName,
+      role,
+      emailVerified,
+      mobileVerified,
+    });
 
     // Basic validation
     if (!name || !email || !mobile || !companyName || !role || !password) {
@@ -47,19 +55,27 @@ export async function registerCompany(formData) {
       return { error: "Invalid website URL" };
     }
 
+    // Check for verification
+    if (!emailVerified || !mobileVerified) {
+      return { error: "Email and mobile verification required" };
+    }
+
     console.log("Validation passed, connecting to database");
     await connectDB();
     console.log("Connected to database");
 
     // Check if user already exists
     const existingUser = await User.findOne({ email });
-    if (existingUser) {
+    if (existingUser && existingUser.name !== "Temporary") {
       console.log("Email already exists:", email);
       return { error: "Email already registered" };
     }
 
     // Check if company already exists
-    const existingCompany = await User.findOne({ companyName });
+    const existingCompany = await User.findOne({
+      companyName,
+      name: { $ne: "Temporary" },
+    });
     if (existingCompany) {
       console.log("Company already exists:", companyName);
       return { error: "Company already registered" };
@@ -69,18 +85,35 @@ export async function registerCompany(formData) {
     const hashedPassword = await bcrypt.hash(password, 10);
     console.log("Password hashed");
 
-    // Create new user
-    const newUser = await User.create({
-      name,
-      email,
-      mobile,
-      companyName,
-      role,
-      website,
-      password: hashedPassword,
-      isCompanyAccount: true,
-    });
-    console.log("User created successfully:", newUser._id.toString());
+    // If temporary user exists from verification, update it
+    if (existingUser && existingUser.name === "Temporary") {
+      await User.findByIdAndUpdate(existingUser._id, {
+        name,
+        companyName,
+        role,
+        website,
+        password: hashedPassword,
+        emailVerified,
+        mobileVerified,
+        isCompanyAccount: true,
+      });
+      console.log("Temporary user updated:", existingUser._id.toString());
+    } else {
+      // Create new user
+      const newUser = await User.create({
+        name,
+        email,
+        mobile,
+        companyName,
+        role,
+        website,
+        password: hashedPassword,
+        emailVerified,
+        mobileVerified,
+        isCompanyAccount: true,
+      });
+      console.log("User created successfully:", newUser._id.toString());
+    }
 
     return { success: "Registration successful. Please log in." };
   } catch (error) {
