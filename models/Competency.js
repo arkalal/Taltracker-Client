@@ -24,6 +24,15 @@ const CompetencySchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  // New fields for competency levels
+  levels: {
+    type: [[String]], // Array of arrays: [competencyIndex][levelIndex]
+    default: [],
+  },
+  hasLevels: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 // Compound index to ensure uniqueness of role + competency type combination
